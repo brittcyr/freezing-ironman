@@ -1,5 +1,3 @@
-
-
 def make_selection(browser, matchups):
     list_of_matchups = []
     # 1. Format the input
@@ -24,19 +22,24 @@ def make_selection(browser, matchups):
         m[4] = matchup[4]
         list_of_matchups.append(m)
 
-
     # 2. Pick the matchup
 
     matchups = list_of_matchups
 
+    after = False
     # First prune by time
     for matchup in matchups:
+        # This takes care of problems with morning games listing before late ones
+        if after:
+            matchups.remove(matchup)
         if matchup[0][0] > matchups[0][0][0]:
             # remove all matchups that arent in the same hour
             matchups.remove(matchup)
+            after = True
         if matchup[0][1] > matchups[0][0][1] + 15:
             # remove all matchups not within 15 minutes
             matchups.remove(matchup)
+            after = True
 
     best_odds = 0
     best_team = None
@@ -49,8 +52,6 @@ def make_selection(browser, matchups):
             best_team = matchup[4]
 
     # 3. Submit the pick
-
-#page = browser.open("http://streak.espn.go.com/createOrUpdateEntry?matchup=m22505o25208").read()
 
     site = "http://streak.espn.go.com/"
     site += best_team

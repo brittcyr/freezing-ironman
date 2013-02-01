@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import optparse
 import login
 import parse_page
@@ -19,7 +20,7 @@ def streak_for_cash():
     (browser, streak_page) = login.get_streak_page(username, password)
     matchups = parse_page.get_matchups(streak_page)
 
-    if 'Your Pending Pick' in streak_page or len(matchups) == 0:
+    if len(matchups) == 0:
         # we currently have a pick right now and need to wait
         print 'PICK IS PENDING'
         return
