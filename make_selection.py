@@ -26,21 +26,6 @@ def make_selection(browser, matchups):
 
     matchups = list_of_matchups
 
-    after = False
-    # First prune by time
-    for matchup in matchups:
-        # This takes care of problems with morning games listing before late ones
-        if after:
-            matchups.remove(matchup)
-        if matchup[0][0] > matchups[0][0][0]:
-            # remove all matchups that arent in the same hour
-            matchups.remove(matchup)
-            after = True
-        if matchup[0][1] > matchups[0][0][1] + 15:
-            # remove all matchups not within 15 minutes
-            matchups.remove(matchup)
-            after = True
-
     best_odds = 0
     best_team = None
     for matchup in matchups:

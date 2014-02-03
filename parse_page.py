@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 
 def get_matchups(page):
     soup = BeautifulSoup(page)
@@ -28,17 +28,22 @@ def get_matchups(page):
 
             team1_link_tag = table.findAll("td", {"class":"mg-column8 pick borderRight "})[0]
             team1_link_tag = team1_link_tag.findAll("a", {"class":"mg-check mg-checkEmpty"})[0]
-            team1_link_unformatted = team1_link_tag.attrs['href']
+            team1_link_unformatted = str(list(team1_link_tag.attrs[3])[1])
 
-            team2_link_tag = table.findAll("td", {"class":"mg-column8 pick borderRight last"})[0]
+            team2_link_tag = table.findAll("td", {"class":"mg-column8 pick borderRight  last"})[0]
             team2_link_tag = team2_link_tag.findAll("a", {"class":"mg-check mg-checkEmpty"})[0]
-            team2_link_unformatted = team2_link_tag.attrs['href']
+            team2_link_unformatted = str(list(team2_link_tag.attrs[3])[1])
 
             matchups.append((time_unformatted, team1_percent_unformatted, \
-                    team2_percent_unformatted, team1_link_unformatted,  \
-                    team2_link_unformatted))
-        except:
+                   team2_percent_unformatted, team1_link_unformatted,  \
+                   team2_link_unformatted))
+        except Exception as e:
             # This is where we look at a link already past due
             continue
 
     return matchups
+
+def get_matchup(page):
+    soup = BeautifulSoup(page)
+    matchup = soup.find("table", { "class":"mg-gametableQ mg-gametableQYlw" })
+    return matchup
